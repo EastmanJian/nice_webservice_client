@@ -52,7 +52,7 @@ public class Application {
 
             //invoke the web service
             SetGeneralInfoResponse response = niceClient.setGeneralInfo(reqPara);
-            System.out.println("SetGeneralInfoResponse=" + response);
+            System.out.println("SetGeneralInfoResponse=" + response.getSetGeneralInfoResult().getValue());
         };
     }
 }
