@@ -19,21 +19,30 @@ public class Application {
         return args -> {
             //construct the SOAP object
             ObjectFactory objFac = new ObjectFactory();
-
-            JAXBElement<String> jeKey = objFac.createKeyValuePairKey("key1");
-            JAXBElement<String> jeValue = objFac.createKeyValuePairValue("value1");
-            KeyValuePair kvp = new KeyValuePair();
-            kvp.setKey(jeKey);
-            kvp.setValue(jeValue);
-
             ArrayOfKeyValuePair aokvp = new ArrayOfKeyValuePair();
-            aokvp.getKeyValuePair().add(kvp);
-            jeKey = objFac.createKeyValuePairKey("key2");
-            jeValue = objFac.createKeyValuePairValue("value2");
-            kvp = new KeyValuePair();
-            kvp.setKey(jeKey);
-            kvp.setValue(jeValue);
-            aokvp.getKeyValuePair().add(kvp);
+            JAXBElement<String> jeKey = null;
+            JAXBElement<String> jeValue = null;
+            KeyValuePair kvp = null;
+
+            if (args.length > 1 && args.length % 2 == 0) {
+                //set the input key-value pairs from arguments
+                for (int i = 0; i < args.length; i += 2) {
+                    jeKey = objFac.createKeyValuePairKey(args[i]);
+                    jeValue = objFac.createKeyValuePairValue(args[i+1]);
+                    kvp = new KeyValuePair();
+                    kvp.setKey(jeKey);
+                    kvp.setValue(jeValue);
+                    aokvp.getKeyValuePair().add(kvp);
+                }
+            } else {
+                //default test key-value pair
+                jeKey = objFac.createKeyValuePairKey("key1");
+                jeValue = objFac.createKeyValuePairValue("value1");
+                kvp = new KeyValuePair();
+                kvp.setKey(jeKey);
+                kvp.setValue(jeValue);
+                aokvp.getKeyValuePair().add(kvp);
+            }
 
             JAXBElement<ArrayOfKeyValuePair> jeaokvp = objFac.createGeneralInfoKeyValuePairs(aokvp);
             GeneralInfo generalInfo = new GeneralInfo();
